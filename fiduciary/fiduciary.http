@@ -1,0 +1,6 @@
+@fiduciary_HostAddress = http://localhost:5124
+
+GET {{fiduciary_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
