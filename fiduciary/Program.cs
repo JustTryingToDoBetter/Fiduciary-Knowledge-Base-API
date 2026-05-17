@@ -81,3 +81,26 @@ app.MapGet("/api/articles", async (
     return Results.Ok(articles);
 }
 );
+
+
+// get specifc article
+app.MapGet("/api/articles/{id}", async (int id, AppDbContext db) =>
+{
+    var article = await db.KnowledgeArticle.FindAsync(id);
+
+    return article is null
+        ? Results.NotFound(new { message = $"Article with ID {id} was not found"})
+        : Results.Ok(new
+        {
+            article.Id,
+            article.Title,
+            article.Summary,
+            article.Content,
+            article.Category,
+            article.Tags,
+            article.Source,
+            article.CreatedAtUtc,
+            article.UpdatedAtUtc
+        });
+});
+
