@@ -282,3 +282,12 @@ string? ValidateArticleInput(
 
     return null; // No validation errors
 }
+
+static string NormaliseTags(string tags)
+{
+    return string.Join(',', tags
+        .Split(',', StringSplitOptions.RemoveEmptyEntries)
+        .Select(tag => tag.Trim().ToLower())
+        .Where(tag => !string.IsNullOrWhiteSpace(tag))
+        .Distinct());
+}
