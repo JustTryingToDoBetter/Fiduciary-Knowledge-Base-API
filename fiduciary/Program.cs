@@ -211,3 +211,15 @@ app.MapDelete("/api/articles/{id:int}", async (int id, AppDbContext db) =>
 
    return Results.NoContent(); // Return 204 No Content to indicate successful deletion
 });
+
+app.MapGet("/api/categories", async (AppDbContext db) =>
+{
+   var categories = await db.KnowledgeArticle
+    .Select(article => article.Category)
+    .Distinct()
+    .OrderBy(category => category)
+    .ToListAsync(); 
+
+   return Results.Ok(categories);
+});
+
