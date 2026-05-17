@@ -147,3 +147,52 @@ app.MapPost("/api/articles", async (CreatedArticleRequest request, AppDbContext 
         article.CreatedAtUtc,
     });
 });
+
+app.MapPut("/api/articles/{id:int}", async (int id, UpdatedArticleRequest request, AppDbContext db) =>
+{
+    var article = await db.KnowledgeArticle.FindAsync(id);
+
+    if (article is null)
+    {
+        return Results.NotFound(new { message = $"Article with ID {id} was not found"});
+    }
+
+    // Validate the input data
+    var validationError = ValidateArticleInput(
+        request.Title,
+        request.Summary,
+        request.Content,
+        request.Category,
+        request.Tags,
+        request.Source
+    );
+    // If validation fails, return a 400 Bad Request with the error message
+    if (validationError is not null)
+    {
+        return Results.BadRequest(new { message = validationError });
+    }
+
+    // Update the article properties
+    article.Title = request.Title.Trim();
+    article.Summary = request.Summary.Trim();
+    article.Content = request.Content.Trim();
+    article.Category = request.Category.Trim();
+    article.Tags = NormaliseTags(request.Tags);
+    article.Source = string.IsNullOrWhiteSpace(request.Source) ? null : request.Source.Trim();
+    article.UpdatedAtUtc = DateTime.UtcNow;
+
+    await db.SaveChangesAsync(); // Save changes to the database
+
+    return Results.Ok(new
+    {
+        article.Id,
+        article.Title,
+        article.Summary,
+        article.Content,
+        article.Category,
+        Tags = article.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries),
+        article.Source,
+        article.CreatedAtUtc,
+        article.UpdatedAtUtc
+    });
+});
