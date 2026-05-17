@@ -223,3 +223,20 @@ app.MapGet("/api/categories", async (AppDbContext db) =>
    return Results.Ok(categories);
 });
 
+app.MapGet("/api/tags", async (AppDbContext db) =>
+{
+    var articles = await db.KnowledgeArticle
+        .Select(article => article.Tags)
+        .ToListAsync(); // Get all tags from articles
+    
+    var tags = articles 
+        .SelectMany(tags => tags.Split(',', StringSplitOptions.RemoveEmptyEntries)) // Split tags into individual tags
+        .Select(tag => tag.Trim()) // Trim whitespace from tags
+        .Where(tag => !string.IsNullOrWhiteSpace(tag)) // Filter out empty tags
+        .Distinct() // Get distinct tags
+        .OrderBy(tag => tag) // Order tags alphabetically
+        .ToList(); // Convert to list
+    
+    return Results.Ok(tags);
+});
+
