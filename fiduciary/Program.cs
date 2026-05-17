@@ -240,3 +240,45 @@ app.MapGet("/api/tags", async (AppDbContext db) =>
     return Results.Ok(tags);
 });
 
+app.Run();
+
+string? ValidateArticleInput(
+    string title,
+    string summary,
+    string content,
+    string category,
+    string tags,
+    string? source)
+{
+    if (string.IsNullOrWhiteSpace(title) || title.Length > 500)
+    {
+        return "Title is required and must be less than 500 characters.";
+    }
+
+    if (string.IsNullOrWhiteSpace(summary) || summary.Length > 500)
+    {
+        return "Summary is required and must be less than 500 characters.";
+    }
+
+    if (string.IsNullOrWhiteSpace(content))
+    {
+        return "Content is required.";
+    }
+
+    if (string.IsNullOrWhiteSpace(category) || category.Length > 100)
+    {
+        return "Category is required and must be less than 100 characters.";
+    }
+
+    if (string.IsNullOrWhiteSpace(tags) || tags.Length > 500)
+    {
+        return "Tags are required and must be less than 500 characters.";
+    }
+
+    if (!string.IsNullOrWhiteSpace(source) && source.Length > 500)
+    {
+        return "Source must be less than 500 characters.";
+    }
+
+    return null; // No validation errors
+}
