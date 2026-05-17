@@ -1,10 +1,10 @@
 namespace fiduciary.Contracts;
 
-public record CreatedArticleResponse (
+public record CreateArticleRequest (
     string Title,
     string Summary,
     string Content,
     string Category,
-    string[] Tags,
+    string Tags,
     string? Source
 );

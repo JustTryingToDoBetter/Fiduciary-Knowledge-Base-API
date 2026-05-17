@@ -5,6 +5,6 @@ public record UpdateArticleRequest(
     string Summary,
     string Content,
     string Category,
-    string[] Tags,
+    string Tags,
     string? Source
 );

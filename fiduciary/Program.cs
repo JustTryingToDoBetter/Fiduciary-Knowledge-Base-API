@@ -37,15 +37,15 @@ app.MapGet("/api/articles", async (
     {
     var query  = db.KnowledgeArticle.AsQueryable(); // Start with the base query
 
-    if (!string.IsNullOrWhiteSpace(search)
+    if (!string.IsNullOrWhiteSpace(search))
     {
         var normalisedSearch = search.Trim().ToLower(); // Normalize search term
 
         query = query.Where(article => 
             article.Title.ToLower().Contains(normalisedSearch) ||
             article.Summary.ToLower().Contains(normalisedSearch) ||
-            article.Content.ToLower().Contains(normalisedSearch) ||
-            
+            article.Content.ToLower().Contains(normalisedSearch)
+        );
     }
 
     if (!string.IsNullOrWhiteSpace(category))
@@ -104,7 +104,7 @@ app.MapGet("/api/articles/{id}", async (int id, AppDbContext db) =>
         });
 });
 
-app.MapPost("/api/articles", async (CreatedArticleRequest request, AppDbContext db) =>
+app.MapPost("/api/articles", async (CreateArticleRequest request, AppDbContext db) =>
 {
     var validationError = ValidateArticleInput(
         request.Title,
@@ -148,7 +148,7 @@ app.MapPost("/api/articles", async (CreatedArticleRequest request, AppDbContext 
     });
 });
 
-app.MapPut("/api/articles/{id:int}", async (int id, UpdatedArticleRequest request, AppDbContext db) =>
+app.MapPut("/api/articles/{id:int}", async (int id, UpdateArticleRequest request, AppDbContext db) =>
 {
     var article = await db.KnowledgeArticle.FindAsync(id);
 
