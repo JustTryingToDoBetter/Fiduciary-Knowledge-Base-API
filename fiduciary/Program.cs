@@ -196,3 +196,18 @@ app.MapPut("/api/articles/{id:int}", async (int id, UpdatedArticleRequest reques
         article.UpdatedAtUtc
     });
 });
+
+app.MapDelete("/api/articles/{id:int}", async (int id, AppDbContext db) =>
+{
+   var article = await db.KnowledgeArticle.FindAsync(id);
+
+   if (article is null)
+   {
+    return Results.NotFound(new { message = $"Article with ID {id} was not found"});
+   }
+
+   db.KnowledgeArticle.Remove(article);
+   await db.SaveChangesAsync();
+
+   return Results.NoContent(); // Return 204 No Content to indicate successful deletion
+});
