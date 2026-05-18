@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("fiduciary")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ec647ae8673fe068a3dec3174add3b28780f603")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a5a6575aab9f4e53de2eb7785618ce2ff6083ca")]
 [assembly: System.Reflection.AssemblyProductAttribute("fiduciary")]
 [assembly: System.Reflection.AssemblyTitleAttribute("fiduciary")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
